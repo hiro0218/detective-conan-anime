@@ -1,0 +1,2 @@
+# detective-conan-anime-database
+ 
