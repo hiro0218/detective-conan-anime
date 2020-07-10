@@ -15,17 +15,19 @@ const oldStories = async () => {
         /// 名探偵コナンスペシャル　『風林火山　迷宮の鎧武者』
         if (story.oaDateId === "20081103") story.story_num = "516";
 
-        data.push({
-          num: story.story_num,
-          date:
-            story.oaDateId.substring(0, 4) +
-            "/" +
-            story.oaDateId.substring(4, 6) +
-            "/" +
-            story.oaDateId.substring(6, 8),
-          title: story.title,
-          url: "https://www.ytv.co.jp/conan/archive/" + story.url,
-        });
+        if (story.story_num !== "" && !story.story_num.includes("R")) {
+          data.push({
+            num: story.story_num,
+            date:
+              story.oaDateId.substring(0, 4) +
+              "/" +
+              story.oaDateId.substring(4, 6) +
+              "/" +
+              story.oaDateId.substring(6, 8),
+            title: story.title,
+            url: "https://www.ytv.co.jp/conan/archive/" + story.url,
+          });
+        }
       });
 
       return data;
