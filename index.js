@@ -3,8 +3,7 @@ const fs = require("fs-extra");
 
 // story.json
 const oldStories = async () => {
-  return await fetch("https://www.ytv.co.jp/conan/data/story.json")
-    .then((res) => res.json())
+  return await fs.readJson("./data/story.json")
     .then((res) => {
       const stories = res.item.reverse();
       const data = [];
