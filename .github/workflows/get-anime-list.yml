@@ -37,5 +37,3 @@ jobs:
     - name: Get Data
       run: |
         node ./index.js
-        git add ./dist
-        git commit -m "update"
