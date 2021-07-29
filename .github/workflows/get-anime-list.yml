@@ -37,3 +37,18 @@ jobs:
     - name: Get Data
       run: |
         node ./index.js
+
+      - name: Diff
+        run: git diff --exit-code || echo "::set-output name=DIFF_EXISTS::1"
+        id: diff
+      - if: steps.diff.outputs.DIFF_EXISTS
+        name: Push the latest
+        run: |
+          DATE=$(date '+%Y-%m-%d')
+          # BRANCH=update-${DATE}
+          BRANCH=master
+          git config --local user.name "GitHub Actions Bot"
+          git config --local user.email "github-actions-bot@users.noreply.github.com"
+          git add dist
+          git commit -m "Update: ${DATE}"
+          git push -u origin "$BRANCH"
