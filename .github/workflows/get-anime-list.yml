@@ -14,29 +14,29 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 0 */2 * *'
+    - cron: "0 0 */2 * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Install
-      run: npm install
+      - name: Install
+        run: npm install
 
-    - name: Get Data
-      run: |
-        node ./index.js
+      - name: Get Data
+        run: |
+          node ./index.js
 
       - name: Diff
         run: git diff --exit-code || echo "::set-output name=DIFF_EXISTS::1"
