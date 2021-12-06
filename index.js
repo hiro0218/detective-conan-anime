@@ -1,37 +1,36 @@
-const fetch = require("node-fetch");
-const fs = require("fs-extra");
+import fetch from "node-fetch";
+import fs from "fs-extra";
 
 // story.json
 const oldStories = async () => {
-  return await fs.readJson("./data/story.json")
-    .then((res) => {
-      const stories = res.item.reverse();
-      const data = [];
+  return await fs.readJson("./data/story.json").then((res) => {
+    const stories = res.item.reverse();
+    const data = [];
 
-      stories.map((story) => {
-        // 話数が飛んでいるものに追加する
-        /// 怪盗キッドの瞬間移動魔術
-        if (story.oaDateId === "20081020") story.story_num = "515";
-        /// 名探偵コナンスペシャル　『風林火山　迷宮の鎧武者』
-        if (story.oaDateId === "20081103") story.story_num = "516";
+    stories.map((story) => {
+      // 話数が飛んでいるものに追加する
+      /// 怪盗キッドの瞬間移動魔術
+      if (story.oaDateId === "20081020") story.story_num = "515";
+      /// 名探偵コナンスペシャル　『風林火山　迷宮の鎧武者』
+      if (story.oaDateId === "20081103") story.story_num = "516";
 
-        if (story.story_num !== "" && !story.story_num.includes("R")) {
-          data.push({
-            num: story.story_num,
-            date:
-              story.oaDateId.substring(0, 4) +
-              "/" +
-              story.oaDateId.substring(4, 6) +
-              "/" +
-              story.oaDateId.substring(6, 8),
-            title: story.title,
-            url: "https://www.ytv.co.jp/conan/archive/" + story.url,
-          });
-        }
-      });
-
-      return data;
+      if (story.story_num !== "" && !story.story_num.includes("R")) {
+        data.push({
+          num: story.story_num,
+          date:
+            story.oaDateId.substring(0, 4) +
+            "/" +
+            story.oaDateId.substring(4, 6) +
+            "/" +
+            story.oaDateId.substring(6, 8),
+          title: story.title,
+          url: "https://www.ytv.co.jp/conan/archive/" + story.url,
+        });
+      }
     });
+
+    return data;
+  });
 };
 
 // case.json
