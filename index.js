@@ -1,40 +1,6 @@
-import fetch from "node-fetch";
-import fs from "fs-extra";
+import fs from "fs";
 
-// story.json
-const oldStories = async () => {
-  return await fs.readJson("./data/story.json").then((res) => {
-    const stories = res.item.reverse();
-    const data = [];
-
-    stories.map((story) => {
-      // 話数が飛んでいるものに追加する
-      /// 怪盗キッドの瞬間移動魔術
-      if (story.oaDateId === "20081020") story.story_num = "515";
-      /// 名探偵コナンスペシャル　『風林火山　迷宮の鎧武者』
-      if (story.oaDateId === "20081103") story.story_num = "516";
-
-      if (story.story_num !== "" && !story.story_num.includes("R")) {
-        data.push({
-          num: story.story_num,
-          date:
-            story.oaDateId.substring(0, 4) +
-            "/" +
-            story.oaDateId.substring(4, 6) +
-            "/" +
-            story.oaDateId.substring(6, 8),
-          title: story.title,
-          url: "https://www.ytv.co.jp/conan/archive/" + story.url,
-        });
-      }
-    });
-
-    return data;
-  });
-};
-
-// case.json
-const newStories = async () => {
+const getStories = async () => {
   return await fetch("https://www.ytv.co.jp/conan/data/case.json")
     .then((res) => res.json())
     .then((res) => {
@@ -43,7 +9,7 @@ const newStories = async () => {
 
       stories.map((story) => {
         // リマスター版は除く
-        if (!story.data.episode.includes("R")) {
+        if (!!story.data.episode && !story.data.episode.includes("R")) {
           data.push({
             num: story.data.episode,
             date: story.data.oa_date,
@@ -62,14 +28,10 @@ const newStories = async () => {
 
 const main = async () => {
   // 取得
-  const older = await oldStories();
-  const newer = await newStories();
-
-  // 結合
-  const stories = [...older, ...newer];
+  const stories = await getStories();
 
   // 書き込み
-  fs.writeJsonSync("./dist/data.json", stories);
+  fs.writeFileSync("./dist/data.json", JSON.stringify(stories, null, 2));
 };
 
 main();
