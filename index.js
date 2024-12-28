@@ -9,7 +9,7 @@ const getStories = async () => {
 
       stories.map((story) => {
         // リマスター版は除く
-        if (!!story.data.episode && !story.data.episode.includes("R")) {
+        if (!!story.data.episode && !story.data.episode.includes("R") && !story.data.episode.includes("SP")) {
           data.push({
             num: story.data.episode,
             date: story.data.oa_date,
