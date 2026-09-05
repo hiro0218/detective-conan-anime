@@ -12,7 +12,7 @@ const getStories = async () => {
         if (!!story.data.episode && !story.data.episode.includes("R") && !story.data.episode.includes("SP")) {
           data.push({
             num: story.data.episode,
-            date: story.data.oa_date,
+            date: story.data.oa_date || story.data.onair_date,
             title: story.data.title,
             url:
               "https://www.ytv.co.jp/conan/archive/k" +
